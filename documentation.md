@@ -43,7 +43,50 @@ Puis y insérer la ligne générée par debgen soit :
 ```    
 2. deb http://ftp.ch.debian.org/debian stable main
 ``` 
+Sauver et fermer le fichier puis lancer la commande suivante pour que le système applique ces modifications.
+```
+apt-get update
+```
 ## Installation du SSH 
+-------------
 ``` 
 apt-get install openssh-server
 ```
+### Configuration du SSH
+
+```
+nano /etc/ssh/sshd_config
+```
+Modifier dans la rubrique __Authentification__ pour éviter que l'on puisse se connecter en __root__ au serveur.
+```
+permitRootLogin : NO
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
