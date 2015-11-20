@@ -19,6 +19,11 @@
 
 ### Options d'installation 
     Utiliser les paramètres recommandés
+
+### Modifications des sources Debian
+Etant donné que l'installation s'est effectué __manuellement__ avec une image iso, 
+nous devons modifier les sources pour que la machine ne pointe plus sur cette image.
+
     
 ### Installation du SSH 
 ``` 
