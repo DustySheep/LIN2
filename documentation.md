@@ -1,12 +1,16 @@
 # (DOC) LIN2 - Quentin Théo - Mini projet
+=================================
+=
 
 ## Configuration de la machine 
+---------
 
  * Debian 8
  * 20 Go
  * 512 Mo RAM
 
 ## Configuration de l'installation de Debian 
+--------------
 * Langue : anglais
 * continent : europe
 * Pays : Suisse
@@ -18,9 +22,11 @@
 * Mot de passe : CeQueVousVoulez
 
 ## Options d'installation 
+-------------
     Utiliser les paramètres recommandés
 
 ## Modification des sources Debian
+----------------------
 Etant donné que l'installation s'est effectué __manuellement__ avec une image iso, 
 nous devons modifier les sources pour que la machine ne pointe plus sur cette image.
  Aller sur le site de [debgen](http://debgen.simplylinux.ch/). 
@@ -61,6 +67,12 @@ Modifier dans la rubrique __Authentification__ pour éviter que l'on puisse se co
 ```
 permitRootLogin : NO
 ```
+## Installation de Nginx
+------------------------------
+```
+apt-get install nginx
+```
+
 
 
 
