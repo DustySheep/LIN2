@@ -142,9 +142,13 @@ Relancer le service
 ```
 service php5-fpm restart
 ```
-D
 
-        
+## Installation de MariaDB
+ ```
+apt-get install mariadb-server mariadb-client
+```
+Configurez le compte root.
+
 
 
 
