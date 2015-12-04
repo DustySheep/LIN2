@@ -90,7 +90,9 @@ include fastcgi_params;
 ```
 Afin que chaque utilisateur ne puisse pas voir les dossiers des autres utilisateurs, nous avons retirer les droits de lecture sur le dossier __www__. 
 
-De plus il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__.
+Il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__. 
+
+Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d'exécution aux __other__ pour chaque dossier user. Ainsi ils n'auront accès qu'a leur propre dossier.
 
 #### Configuration par utilisateur
 Pour chaque utilisateur il est nécessaire de créer un fichier de configuration.
