@@ -1,18 +1,16 @@
-# (DOC) LIN2 - Quentin Théo - Mini projet
-=================================
-=
+# (DOC) LIN2 - Quentin Théo 
+=======================================
 
 ## Configuration de la machine 
----------
-
+------------------------------
  * Debian 8
  * 20 Go
  * 512 Mo RAM
 
 ## Configuration de l'installation de Debian 
---------------
+-------------------------------------------
 * Langue : anglais
-* continent : europe
+* Continent : europe
 * Pays : Suisse
 * Langage : en_GB_UTF8
 * Nom de la machine : debian
@@ -22,10 +20,10 @@
 * Mot de passe : CeQueVousVoulez
 
 ## Modification des sources Debian
-----------------------
+----------------------------------
 Etant donné que l'installation s'est effectué __manuellement__ avec une image iso, 
 nous devons modifier les sources pour que la machine ne pointe plus sur cette image.
- Aller sur le site de [debgen](http://debgen.simplylinux.ch/). 
+Aller sur le site de [debgen](http://debgen.simplylinux.ch/). 
 
 Sélectionner les informations suivantes : 
 * Switzerland
@@ -36,6 +34,7 @@ Sélectionner les informations suivantes :
 Puis cliquer sur  __Generate sources-list__
 
 Une pop-up s'ouvre alors et propose une ligne de commande à copier dans le fichier __sources.list__.
+
 ### Marche à suivre
 ```
 1. nano /etc/apt/sources.list
@@ -49,13 +48,14 @@ Sauver et fermer le fichier puis lancer la commande suivante pour que le système
 ```
 apt-get update
 ```
+
 ## Installation du SSH 
--------------
+----------------------
 ``` 
 apt-get install openssh-server
 ```
-### Configuration du SSH
 
+### Configuration du SSH
 ```
 nano /etc/ssh/sshd_config
 ```
@@ -63,8 +63,9 @@ Modifier dans la rubrique __Authentification__ pour éviter que l'on puisse se co
 ```
 permitRootLogin : NO
 ```
+
 ## Installation de Nginx
-------------------------------
+------------------------
 ```
 apt-get install nginx
 ```
@@ -74,17 +75,21 @@ Premièrement, il faut éditer le fichier de configuration Nginx:
 ```
 nano /etc/nginx/sites-available/default
 ```
+
 Dans ce fichier, remplacer les informations suivantes :
 ```
 root /usr/share/nginx/www/;
 server_name VotreAdresseIp ou NomDeDomaine;
 ```
+
 Décommenter
 ``` 
 location ~\.php$ {.......}
 ```
+
 à l'intérieur : 
-```fastcgi_pass unix:/var/run/php5-fpm.sock;
+```
+fastcgi_pass unix:/var/run/php5-fpm.sock;
 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name$;
 include fastcgi_params;
 ```
@@ -125,6 +130,7 @@ apt-get install php5-fpm php5-mysql
 
 ### Configuration PHP5-fpm
 Se déplacer dans le fichier /etc/php5/fpm/php.ini
+
 Modifier la ligne suivante :
 ```
 cgi.fix_pathinfo = 0
@@ -136,6 +142,7 @@ Toujours dans le même fichier, modifier la ligne suivante :
 ```
 listen = /var/run/php5-fpm-sock
 ```
+
 Relancer le service 
 ```
 service php5-fpm restart
@@ -146,12 +153,15 @@ service php5-fpm restart
 apt-get install mariadb-server mariadb-client
 ```
 Configurez le compte root.
+
 ### Configuration de MariaDB
 afin d'améliorer la sécurité de MariaDB, exécuter la commande : 
 ```
 mysqsl_secure_installation
 ```
+
 Celle-ci va supprimer les comptes anonymes, réinitialisé le mot de passe root, empêcher la connexion en root en dehors de localhost.
+
 ### Création d'un utilisateur
 ```
 GRANT ALL PRIVILEGES ON UserDb.* TO Username@localhost IDENTIFIED BY 'UserPassword';
