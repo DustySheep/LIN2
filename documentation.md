@@ -39,7 +39,7 @@ Une pop-up s'ouvre alors et propose une ligne de commande à copier dans le fichi
 ```
 1. nano /etc/apt/sources.list
 ``` 
-Mettre en commentaires la 1ère et 2ème ligne à l'aide du #.
+Mettre en commentaires les sources pointant sur le cd-rom #.
 Puis y insérer la ligne générée par debgen soit : 
 ```    
 2. deb http://ftp.ch.debian.org/debian stable main
@@ -93,16 +93,11 @@ fastcgi_pass unix:/var/run/php5-fpm.sock;
 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name$;
 include fastcgi_params;
 ```
-Afin que chaque utilisateur ne puisse pas voir les dossiers des autres utilisateurs, nous avons retirer les droits de lecture sur le dossier __www__. 
-
-Il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__. 
-
-Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d'exécution aux __other__ pour chaque dossier user. Ainsi ils n'auront accès qu'a leur propre dossier.
 
 #### Configuration par utilisateur
 Pour chaque utilisateur il est nécessaire de créer un fichier de configuration.
 Ce fichier permet de spécifier l'endroit où l'utilisateur peut déposer ses fichiers afin que le serveur puisse les traiter. 
-Ce fichier doit se trouver dans le dossier __conf.d__ de Nginx. Le nom du fichier doit être le même que le nom de l'utilisateur. Exemple : __NomUtilisateur.conf__
+Ce fichier doit se trouver dans le dossier __/etc/nginx/conf.d__ de Nginx. Le nom du fichier doit être le même que le nom de l'utilisateur. Exemple : __NomUtilisateur.conf__
 
 Veuillez insérer les informations suivantes dans le fichier :
 ```
@@ -122,6 +117,15 @@ server {
     }
 }
 ```
+
+Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le crée dans __/usr/share/nginx/www__
+Afin que chaque utilisateur ne puisse pas voir les dossiers des autres utilisateurs, nous avons retirer les droits de lecture sur le dossier __www__. 
+
+Il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__. 
+
+Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d'exécution aux __other__ pour chaque dossier user. Ainsi ils n'auront accès qu'a leur propre dossier.
+
+
 
 ## Installation de PHP5-fpm et PHP5-MySql
 ```
