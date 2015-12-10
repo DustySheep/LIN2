@@ -152,7 +152,7 @@ service php5-fpm restart
  ```
 apt-get install mariadb-server mariadb-client
 ```
-Configurez le compte root.
+Suivre les instructions pour configurer le compte root
 
 ### Configuration de MariaDB
 afin d'améliorer la sécurité de MariaDB, exécuter la commande : 
@@ -168,6 +168,8 @@ GRANT ALL PRIVILEGES ON UserDb.* TO Username@localhost IDENTIFIED BY 'UserPasswo
 FLUSH PRIVILEGES;
 quit
 ```
+
+Ces privilèges permettent à l'utilisateur d'avoir accès seulement à sa base de données.
 
 
 
