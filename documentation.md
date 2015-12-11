@@ -68,28 +68,33 @@ Redémarrer le service ssh
 
 ## Installation de Nginx
 ------------------------
+
 ```
 apt-get install nginx
 ```
 
 ### Configuration Nginx
+
 Premièrement, il faut éditer le fichier de configuration Nginx:
 ```
 nano /etc/nginx/sites-available/default
 ```
 
 Dans ce fichier, remplacer les informations suivantes :
+
 ```
 root /usr/share/nginx/www/;
 server_name VotreAdresseIp ou NomDeDomaine;
 ```
 
 Décommenter
+
 ``` 
 location ~\.php$ {.......}
 ```
 
 à l'intérieur : 
+
 ```
 fastcgi_pass unix:/var/run/php5-fpm.sock;
 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name$;
@@ -102,6 +107,7 @@ Ce fichier permet de spécifier l'endroit où l'utilisateur peut déposer ses fichi
 Ce fichier doit se trouver dans le dossier __/etc/nginx/conf.d__ de Nginx. Le nom du fichier doit être le même que le nom de l'utilisateur. Exemple : __NomUtilisateur.conf__
 
 Veuillez insérer les informations suivantes dans le fichier :
+
 ```
 server {
     listen 80;
@@ -120,6 +126,12 @@ server {
 }
 ```
 
+Redemarrer le service
+
+```
+/etc/init.d/nginx restart
+```
+
 Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le crée dans __/usr/share/nginx/__
 Afin que chaque utilisateur ne puisse pas voir les dossiers des autres, nous avons retirer les droits de lecture sur le dossier __www__ au groupe d'utilisateurs __other__. 
 
@@ -130,6 +142,7 @@ Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d
 
 
 ## Installation de PHP5-fpm et PHP5-MySql
+
 ```
 apt-get install php5-fpm php5-mysql
 ```
@@ -138,9 +151,11 @@ apt-get install php5-fpm php5-mysql
 Modifier le fichier __/etc/php5/fpm/php.ini__
 
 A ligne suivante :
+
 ```
 773: cgi.fix_pathinfo = 0
 ```
+
 Cela va ralentir la requête mais la rend plus sûre.
 
 Il est maintenant nécessaire de changer le port d'écoute de php5 qui pointe sur son socket.
@@ -150,7 +165,8 @@ listen = /var/run/php5-fpm-sock
 ```
 ### Configuration par utilisateur
 Comme pour nginx, il est nécessaire de mettre en place un fichier de configuration propre à chaque utlisateur.
-Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes
+Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes:
+
 ```
 [www] -> [NomUtilisateur]
 user = NomUtilisateur
@@ -162,20 +178,23 @@ listen.owner = NomUtilisateur
 listen.group = NomUtilisateur
 ```
 
+Relancer le service
 
-Relancer le service 
 ```
-service php5-fpm restart
+/etc/init.d/php5-fpm restart
 ```
 
 ## Installation de MariaDB
+
  ```
 apt-get install mariadb-server mariadb-client
 ```
+
 Suivre les instructions pour configurer le compte root
 
 ### Configuration de MariaDB
-afin d'améliorer la sécurité de MariaDB, exécuter la commande : 
+afin d'améliorer la sécurité de MariaDB, exécuter la commande :
+
 ```
 mysqsl_secure_installation
 ```
@@ -183,6 +202,7 @@ mysqsl_secure_installation
 Celle-ci va supprimer les comptes anonymes, réinitialisé le mot de passe root, empêcher la connexion en root en dehors de localhost.
 
 ### Création d'un utilisateur
+
 ```
 GRANT ALL PRIVILEGES ON UserDb.* TO Username@localhost IDENTIFIED BY 'UserPassword';
 FLUSH PRIVILEGES;
