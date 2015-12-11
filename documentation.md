@@ -107,11 +107,11 @@ server {
     listen 80;
     root /usr/share/nginx/www/NomUtilisateur;
     index index.php index.html index.htm;
-    server_name localhost;
+    server_name NomUtilisateur;
     location / {
             try_files $uri $uri/ /index.php;
     }
-    location usr/share/www/NomUtilisateur/.php$ {
+    location ~ \.php$ {
             try_files $uri =404;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
@@ -141,14 +141,14 @@ A ligne suivante :
 ```
 773: cgi.fix_pathinfo = 0
 ```
-Celà va ralentir la requête mais la rend plus sûre.
+Cela va ralentir la requête mais la rend plus sûre.
 
 Il est maintenant nécessaire de changer le port d'écoute de php5 qui pointe sur son socket.
 Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, décommenter, si nécessaire, la ligne suivante :
 ```
 listen = /var/run/php5-fpm-sock
 ```
-
+### Configuration par utilisateur
 Comme pour nginx, il est nécessaire de mettre en place un fichier de configuration propre à chaque utlisateur.
 Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes
 ```
