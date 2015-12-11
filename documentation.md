@@ -64,6 +64,8 @@ Modifier dans la rubrique __Authentification__ pour éviter que l'on puisse se co
 permitRootLogin : NO
 ```
 
+Redémarrer le service ssh
+
 ## Installation de Nginx
 ------------------------
 ```
@@ -113,7 +115,7 @@ server {
             try_files $uri =404;
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include fastcgi_params;
-            fastcgi_pass unix:/var/run/php5-fpm.sock;
+            fastcgi_pass unix:/var/run/NomUtilisateur.sock;
     }
 }
 ```
@@ -133,7 +135,7 @@ apt-get install php5-fpm php5-mysql
 ```
 
 ### Configuration PHP5-fpm
-Modifier le fichier /etc/php5/fpm/php.ini
+Modifier le fichier __/etc/php5/fpm/php.ini__
 
 A ligne suivante :
 ```
@@ -142,10 +144,24 @@ A ligne suivante :
 Celà va ralentir la requête mais la rend plus sûre.
 
 Il est maintenant nécessaire de changer le port d'écoute de php5 qui pointe sur son socket.
-Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, modifier la ligne suivante :
+Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, décommenter, si nécessaire, la ligne suivante :
 ```
-38: listen = /var/run/php5-fpm-sock
+listen = /var/run/php5-fpm-sock
 ```
+
+Comme pour nginx, il est nécessaire de mettre en place un fichier de configuration propre à chaque utlisateur.
+Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes
+```
+[www] -> [NomUtilisateur]
+user = NomUtilisateur
+group = NomUtilisateur
+[...]
+listen = /var/run/NomUtilisateur.sock
+[..]
+listen.owner = NomUtilisateur
+listen.group = NomUtilisateur
+```
+
 
 Relancer le service 
 ```
