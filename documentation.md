@@ -118,12 +118,12 @@ server {
 }
 ```
 
-Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le crée dans __/usr/share/nginx/www__
-Afin que chaque utilisateur ne puisse pas voir les dossiers des autres utilisateurs, nous avons retirer les droits de lecture sur le dossier __www__. 
+Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le crée dans __/usr/share/nginx/__
+Afin que chaque utilisateur ne puisse pas voir les dossiers des autres, nous avons retirer les droits de lecture sur le dossier __www__ au groupe d'utilisateurs __other__. 
 
 Il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__. 
 
-Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d'exécution aux __other__ pour chaque dossier user. Ainsi ils n'auront accès qu'a leur propre dossier.
+Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d'exécution au groupe __other__ pour chaque dossier des utilisateurs. Ainsi ils n'auront accès qu'a leur propre répertoire.
 
 
 
