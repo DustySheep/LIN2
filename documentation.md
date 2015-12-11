@@ -133,18 +133,18 @@ apt-get install php5-fpm php5-mysql
 ```
 
 ### Configuration PHP5-fpm
-Se déplacer dans le fichier /etc/php5/fpm/php.ini
+Modifier le fichier /etc/php5/fpm/php.ini
 
-Modifier la ligne suivante :
+A ligne suivante :
 ```
-cgi.fix_pathinfo = 0
+773: cgi.fix_pathinfo = 0
 ```
 Celà va ralentir la requête mais la rend plus sûre.
 
 Il est maintenant nécessaire de changer le port d'écoute de php5 qui pointe sur son socket.
-Toujours dans le même fichier, modifier la ligne suivante :
+Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, modifier la ligne suivante :
 ```
-listen = /var/run/php5-fpm-sock
+38: listen = /var/run/php5-fpm-sock
 ```
 
 Relancer le service 
