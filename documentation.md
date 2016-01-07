@@ -1,14 +1,18 @@
 # (DOC) LIN2 - Quentin Théo 
-=======================================
 
+
+Ce document décrit l'installation d'un serveur web avec les services suivant : 
+ * SSH
+ * Nginx
+ * PHP-FPM
+ * MariaDB
+ 
 ## Configuration de la machine 
-------------------------------
  * Debian 8
  * 20 Go
  * 512 Mo RAM
 
 ## Configuration de l'installation de Debian 
--------------------------------------------
 * Langue : anglais
 * Continent : europe
 * Pays : Suisse
@@ -19,8 +23,13 @@
 * Compte : CeQueVousVoulez
 * Mot de passe : CeQueVousVoulez
 
+## Création d'un utilisateur
+```
+adduser NomUtilisateur
+```
+Spécifier un mot de passe puis valider toutes les informations suivantes jusqu'à la création du compte.
+
 ## Modification des sources Debian
-----------------------------------
 Etant donné que l'installation s'est effectué __manuellement__ avec une image iso, 
 nous devons modifier les sources pour que la machine ne pointe plus sur cette image.
 Aller sur le site de [debgen](http://debgen.simplylinux.ch/). 
@@ -50,7 +59,6 @@ apt-get update
 ```
 
 ## Installation du SSH 
-----------------------
 ``` 
 apt-get install openssh-server
 ```
@@ -67,14 +75,11 @@ permitRootLogin : NO
 Redémarrer le service ssh
 
 ## Installation de Nginx
-------------------------
-
 ```
 apt-get install nginx
 ```
 
 ### Configuration Nginx
-
 Premièrement, il faut éditer le fichier de configuration Nginx:
 ```
 nano /etc/nginx/sites-available/default
@@ -93,7 +98,7 @@ Décommenter
 location ~\.php$ {.......}
 ```
 
-à l'intérieur : 
+insérer à l'intérieur des accollades : 
 
 ```
 fastcgi_pass unix:/var/run/php5-fpm.sock;
@@ -131,18 +136,25 @@ Redemarrer le service
 ```
 /etc/init.d/nginx restart
 ```
-
-Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le crée dans __/usr/share/nginx/__
+## Droits utilisateur
+Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le créer dans __/usr/share/nginx/__
 Afin que chaque utilisateur ne puisse pas voir les dossiers des autres, nous avons retirer les droits de lecture sur le dossier __www__ au groupe d'utilisateurs __other__. 
+```
+chmod o-r /usr/share/nginx/www
+```
 
-Il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__. 
+Il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__.
+```
+chown NomUtilisateur DossierUtilisateur
+```
 
 Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d'exécution au groupe __other__ pour chaque dossier des utilisateurs. Ainsi ils n'auront accès qu'a leur propre répertoire.
-
+```
+chmod o-x /usr/share/nginx/www/*
+```
 
 
 ## Installation de PHP5-fpm et PHP5-MySql
-
 ```
 apt-get install php5-fpm php5-mysql
 ```
@@ -153,7 +165,7 @@ Modifier le fichier __/etc/php5/fpm/php.ini__
 A ligne suivante :
 
 ```
-773: cgi.fix_pathinfo = 0
+773: cgi.fix_pathinfo = 1
 ```
 
 Cela va ralentir la requête mais la rend plus sûre.
@@ -185,7 +197,6 @@ Relancer le service
 ```
 
 ## Installation de MariaDB
-
  ```
 apt-get install mariadb-server mariadb-client
 ```
@@ -202,9 +213,15 @@ mysqsl_secure_installation
 Celle-ci va supprimer les comptes anonymes, réinitialisé le mot de passe root, empêcher la connexion en root en dehors de localhost.
 
 ### Création d'un utilisateur
-
+Connexion en tant que root
 ```
-GRANT ALL PRIVILEGES ON UserDb.* TO Username@localhost IDENTIFIED BY 'UserPassword';
+mysql -u root -p
+```
+
+Création d'une basees l'utilisateur lui accordant tout les droits sur celle-ci
+```
+CREATE DATABASE UtilisateurDb;
+GRANT ALL PRIVILEGES ON UtilisateurDb.* TO NomUtilisateur@localhost IDENTIFIED BY 'UserPassword';
 FLUSH PRIVILEGES;
 quit
 ```
