@@ -229,8 +229,8 @@ mysql -u root -p
 
 Création d'une base l'utilisateur lui accordant tout les droits sur celle-ci
 ```
-CREATE DATABASE UtilisateurDb;
-GRANT ALL PRIVILEGES ON UtilisateurDb.* TO NomUtilisateur@localhost IDENTIFIED BY 'UserPassword';
+CREATE DATABASE NomUtilisateur_Db;
+GRANT ALL PRIVILEGES ON NomUtilisateur_Db.* TO NomUtilisateur@localhost IDENTIFIED BY 'UserPassword';
 FLUSH PRIVILEGES;
 quit
 ```
