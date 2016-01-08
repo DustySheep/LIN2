@@ -186,7 +186,12 @@ Afin que chaque utilisateur ne puisse pas voir les dossiers des autres, nous avo
 chmod o-r /usr/share/nginx/www
 ```
 
-Il est nécessaire lors de la création du dossier de l'utilisateur, de le nommer propriétaire de son dossier à l'aide de la commande __chown__.
+Créer le dossier de l'utilisateur
+```
+mkdir NomUtilisateur
+```
+
+Il est nécessaire de le nommer propriétaire de son dossier à l'aide de la commande __chown__.
 ```
 chown NomUtilisateur DossierUtilisateur
 ```
@@ -196,10 +201,10 @@ Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d
 chmod o-x /usr/share/nginx/www/*
 ```
 
-### php5-fpm
+### PHP5-fpm
 Comme pour nginx, il est nécessaire de mettre en place un fichier de configuration propre à chaque utlisateur.
 
-Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes
+Faire une copie du fichier /etc/php5/fpm/pool.d/__www.conf__ en le nomant __NomUtilisateur.conf__ dans le même répertoire. Modifier les informations suivantes
 ```
 [www] -> [NomUtilisateur]
 user = NomUtilisateur
@@ -211,7 +216,7 @@ listen.owner = NomUtilisateur
 listen.group = NomUtilisateur
 ```
 
-Relancer le service
+Redémarrer le service
 ```
 /etc/init.d/php5-fpm restart
 ```
