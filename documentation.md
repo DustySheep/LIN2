@@ -11,6 +11,7 @@ Ce document décrit l'installation d'un serveur web avec les services suivant :
  * Debian 8
  * 20 Go
  * 512 Mo RAM
+ * 64 bits
 
 ## Configuration de l'installation de Debian 
 * Langue : anglais
@@ -76,19 +77,21 @@ permitRootLogin : NO
 ```
 
 Redémarrer le service ssh
-
+```
+service ssh restart
+```
 ## Installation de Nginx
 ```
 apt-get install nginx
 ```
 
 ### Configuration Nginx
-Premièrement, il faut éditer le fichier de configuration Nginx:
+Premièrement, il faut éditer le fichier de configuration Nginx
 ```
 nano /etc/nginx/sites-available/default
 ```
 
-Dans ce fichier, remplacer les informations suivantes :
+Dans ce fichier, remplacer les informations suivantes
 ```
 root /usr/share/nginx/www/;
 server_name VotreAdresseIp ou NomDeDomaine;
@@ -106,7 +109,48 @@ fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name$;
 include fastcgi_params;
 ```
 
-#### Configuration par utilisateur
+Redémarrer le service nginx
+```
+service nginx restart
+```
+## Installation de PHP5-fpm et PHP5-MySql
+```
+apt-get install php5-fpm php5-mysql
+```
+
+### Configuration PHP5-fpm
+Modifier le fichier __/etc/php5/fpm/php.ini__
+
+A ligne suivante
+```
+773: cgi.fix_pathinfo = 1
+```
+
+Cela va ralentir la requête mais la rend plus sûre.
+
+Il est maintenant nécessaire de changer le port d'écoute de php5 qui pointe sur son socket.
+Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, décommenter, si nécessaire, la ligne suivante
+```
+listen = /var/run/php5-fpm-sock
+```
+
+## Installation de MariaDB
+ ```
+apt-get install mariadb-server mariadb-client
+```
+
+Suivre les instructions pour configurer le compte root
+
+### Configuration de MariaDB
+afin d'améliorer la sécurité de MariaDB, exécuter la commande
+```
+mysqsl_secure_installation
+```
+
+Celle-ci va supprimer les comptes anonymes, réinitialisé le mot de passe root, empêcher la connexion en root en dehors de localhost.
+
+## Configuration par utilisateur 
+### Nginx
 Pour chaque utilisateur il est nécessaire de créer un fichier de configuration.
 Ce fichier permet de spécifier l'endroit où l'utilisateur peut déposer ses fichiers afin que le serveur puisse les traiter. 
 Ce fichier doit se trouver dans le dossier __/etc/nginx/conf.d__ de Nginx. Le nom du fichier doit être le même que le nom de l'utilisateur. Exemple : __NomUtilisateur.conf__
@@ -135,7 +179,7 @@ Redémarrer le service
 /etc/init.d/nginx restart
 ```
 
-## Droits utilisateur
+### Droits utilisateur
 Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le créer dans __/usr/share/nginx/__
 Afin que chaque utilisateur ne puisse pas voir les dossiers des autres, nous avons retirer les droits de lecture sur le dossier __www__ au groupe d'utilisateurs __other__. 
 ```
@@ -152,28 +196,7 @@ Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d
 chmod o-x /usr/share/nginx/www/*
 ```
 
-## Installation de PHP5-fpm et PHP5-MySql
-```
-apt-get install php5-fpm php5-mysql
-```
-
-### Configuration PHP5-fpm
-Modifier le fichier __/etc/php5/fpm/php.ini__
-
-A ligne suivante
-```
-773: cgi.fix_pathinfo = 1
-```
-
-Cela va ralentir la requête mais la rend plus sûre.
-
-Il est maintenant nécessaire de changer le port d'écoute de php5 qui pointe sur son socket.
-Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, décommenter, si nécessaire, la ligne suivante
-```
-listen = /var/run/php5-fpm-sock
-```
-
-### Configuration par utilisateur
+### php5-fpm
 Comme pour nginx, il est nécessaire de mettre en place un fichier de configuration propre à chaque utlisateur.
 
 Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes
@@ -193,22 +216,7 @@ Relancer le service
 /etc/init.d/php5-fpm restart
 ```
 
-## Installation de MariaDB
- ```
-apt-get install mariadb-server mariadb-client
-```
-
-Suivre les instructions pour configurer le compte root
-
-### Configuration de MariaDB
-afin d'améliorer la sécurité de MariaDB, exécuter la commande
-```
-mysqsl_secure_installation
-```
-
-Celle-ci va supprimer les comptes anonymes, réinitialisé le mot de passe root, empêcher la connexion en root en dehors de localhost.
-
-### Création d'un utilisateur
+### MariaDB
 Connexion en tant que root
 ```
 mysql -u root -p
@@ -223,8 +231,6 @@ quit
 ```
 
 Ces privilèges permettent à l'utilisateur d'avoir accès seulement à sa base de données.
-
-
 
 
 
