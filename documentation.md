@@ -98,7 +98,7 @@ Décommenter
 location ~\.php$ {.......}
 ```
 
-insérer à l'intérieur des accollades : 
+insérer à l'intérieur des accolades : 
 
 ```
 fastcgi_pass unix:/var/run/php5-fpm.sock;
@@ -218,7 +218,7 @@ Connexion en tant que root
 mysql -u root -p
 ```
 
-Création d'une basees l'utilisateur lui accordant tout les droits sur celle-ci
+Création d'une base l'utilisateur lui accordant tout les droits sur celle-ci
 ```
 CREATE DATABASE UtilisateurDb;
 GRANT ALL PRIVILEGES ON UtilisateurDb.* TO NomUtilisateur@localhost IDENTIFIED BY 'UserPassword';
