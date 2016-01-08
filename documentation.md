@@ -98,7 +98,7 @@ Décommenter
 location ~\.php$ {.......}
 ```
 
-insérer à l'intérieur des accolades : 
+Insérer à l'intérieur des accolades : 
 
 ```
 fastcgi_pass unix:/var/run/php5-fpm.sock;
