@@ -48,11 +48,13 @@ Une pop-up s'ouvre alors et propose une ligne de commande à copier dans le fichi
 ```
 1. nano /etc/apt/sources.list
 ``` 
+
 Mettre en commentaires les sources pointant sur le cd-rom #.
 Puis y insérer la ligne générée par debgen soit : 
 ```    
 2. deb http://ftp.ch.debian.org/debian stable main
-``` 
+```
+
 Sauver et fermer le fichier puis lancer la commande suivante pour que le système applique ces modifications.
 ```
 apt-get update
@@ -67,6 +69,7 @@ apt-get install openssh-server
 ```
 nano /etc/ssh/sshd_config
 ```
+
 Modifier dans la rubrique __Authentification__ pour éviter que l'on puisse se connecter en __root__ au serveur.
 ```
 permitRootLogin : NO
@@ -86,20 +89,17 @@ nano /etc/nginx/sites-available/default
 ```
 
 Dans ce fichier, remplacer les informations suivantes :
-
 ```
 root /usr/share/nginx/www/;
 server_name VotreAdresseIp ou NomDeDomaine;
 ```
 
 Décommenter
-
 ``` 
 location ~\.php$ {.......}
 ```
 
-Insérer à l'intérieur des accolades : 
-
+Insérer à l'intérieur des accolades
 ```
 fastcgi_pass unix:/var/run/php5-fpm.sock;
 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name$;
@@ -111,8 +111,7 @@ Pour chaque utilisateur il est nécessaire de créer un fichier de configuration.
 Ce fichier permet de spécifier l'endroit où l'utilisateur peut déposer ses fichiers afin que le serveur puisse les traiter. 
 Ce fichier doit se trouver dans le dossier __/etc/nginx/conf.d__ de Nginx. Le nom du fichier doit être le même que le nom de l'utilisateur. Exemple : __NomUtilisateur.conf__
 
-Veuillez insérer les informations suivantes dans le fichier :
-
+Veuillez insérer les informations suivantes dans le fichier
 ```
 server {
     listen 80;
@@ -131,11 +130,11 @@ server {
 }
 ```
 
-Redemarrer le service
-
+Redémarrer le service
 ```
 /etc/init.d/nginx restart
 ```
+
 ## Droits utilisateur
 Comme nous avons décidé précédement que le dossier __www__ sera le dossier où les utilisateurs vont déposer leur site web, il est nécessaire de le créer dans __/usr/share/nginx/__
 Afin que chaque utilisateur ne puisse pas voir les dossiers des autres, nous avons retirer les droits de lecture sur le dossier __www__ au groupe d'utilisateurs __other__. 
@@ -153,7 +152,6 @@ Afin d'améliorer la sécurité interne il est indispensable d'enlever les droits d
 chmod o-x /usr/share/nginx/www/*
 ```
 
-
 ## Installation de PHP5-fpm et PHP5-MySql
 ```
 apt-get install php5-fpm php5-mysql
@@ -162,8 +160,7 @@ apt-get install php5-fpm php5-mysql
 ### Configuration PHP5-fpm
 Modifier le fichier __/etc/php5/fpm/php.ini__
 
-A ligne suivante :
-
+A ligne suivante
 ```
 773: cgi.fix_pathinfo = 1
 ```
@@ -171,14 +168,15 @@ A ligne suivante :
 Cela va ralentir la requête mais la rend plus sûre.
 
 Il est maintenant nécessaire de changer le port d'écoute de php5 qui pointe sur son socket.
-Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, décommenter, si nécessaire, la ligne suivante :
+Dans le fichier __/etc/php5/fpm/pool.d/www.conf__, décommenter, si nécessaire, la ligne suivante
 ```
 listen = /var/run/php5-fpm-sock
 ```
+
 ### Configuration par utilisateur
 Comme pour nginx, il est nécessaire de mettre en place un fichier de configuration propre à chaque utlisateur.
-Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes:
 
+Faire une copie du fichier __www.conf__ en le nomant __NomUtilisateur.conf__. Modifier les informations suivantes
 ```
 [www] -> [NomUtilisateur]
 user = NomUtilisateur
@@ -191,7 +189,6 @@ listen.group = NomUtilisateur
 ```
 
 Relancer le service
-
 ```
 /etc/init.d/php5-fpm restart
 ```
@@ -204,8 +201,7 @@ apt-get install mariadb-server mariadb-client
 Suivre les instructions pour configurer le compte root
 
 ### Configuration de MariaDB
-afin d'améliorer la sécurité de MariaDB, exécuter la commande :
-
+afin d'améliorer la sécurité de MariaDB, exécuter la commande
 ```
 mysqsl_secure_installation
 ```
