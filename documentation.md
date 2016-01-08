@@ -237,6 +237,7 @@ quit
 
 Ces privilèges permettent à l'utilisateur d'avoir accès seulement à sa base de données.
 
+La configuration est maintenant terminée.
 
 
 
